@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Acro-API</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="home_page_title_main">Application Home</string>
+    <string name="acro_input_hint_main">Input acronym</string>
+    <string name="url_credit_main">Powered by: http://www.nactem.ac.uk/software/acromine/</string>
+    <string name="button_text_main">Launch!</string>
+    <string name="title_activity_acro">Results Page</string>
+    <string name="results_header_acro">Your Results</string>
+
+</resources>
