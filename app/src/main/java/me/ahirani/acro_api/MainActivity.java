@@ -21,7 +21,7 @@ public class MainActivity extends ActionBarActivity {
     public void displaySearchResults(View view){
 
         // Create an intent and pass in the context
-        // Pass in the class of what the intent is being delievered to
+        // Pass in the class of what the intent is being delivered to
         Intent intent = new Intent(this, AcroActivity.class);
 
         // Get the EditText element
