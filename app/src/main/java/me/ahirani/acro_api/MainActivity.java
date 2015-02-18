@@ -20,7 +20,6 @@ public class MainActivity extends ActionBarActivity {
 
     public void displaySearchResults(View view){
 
-        /*
         // Create an intent and pass in the context
         // Pass in the class of what the intent is being delivered to
         Intent intent = new Intent(this, AcroActivity.class);
@@ -36,19 +35,6 @@ public class MainActivity extends ActionBarActivity {
 
         // Start the activity and pass in the intent
         startActivity(intent);
-
-        */
-
-        Bundle bundle = new Bundle();
-
-        EditText editText = (EditText) findViewById(R.id.editText);
-
-        // String to hold the searched acronym
-        String nameHolder = editText.getText().toString();
-        bundle.putString(EXTRA_MESSAGE, nameHolder);
-
-        AcroActivity.AcroFragment frag = new AcroActivity.AcroFragment();
-        frag.setArguments(bundle);
     }
 
 

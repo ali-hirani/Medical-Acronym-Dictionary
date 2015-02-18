@@ -1,16 +1,10 @@
 package me.ahirani.acro_api;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -30,15 +24,20 @@ public class AcroActivity extends ActionBarActivity {
         // Every activity is invoked by an intent
 
         // getIntent gets the intent and the data contained within it
+        Intent intent = getIntent();
+        String searchTerm = intent.getStringExtra(MainActivity.EXTRA_MESSAGE).toUpperCase();
+        String temp = "";
 
+        for(int i = 0; i < searchTerm.length(); i++) {
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_acro, new AcroFragment())
-                    .commit();
+            temp += searchTerm.charAt(i);
+            temp += '.';
         }
+        searchTerm = temp;
 
-        /*
+        // Populate the textview with the search term
+        TextView textView = (TextView) findViewById(R.id.textView_acro);
+        textView.setText(searchTerm);
 
         // Dummy Data
         String[] data = {
@@ -70,93 +69,29 @@ public class AcroActivity extends ActionBarActivity {
 
         ListView listView = (ListView) findViewById(R.id.listview_acro);
         listView.setAdapter(acroAdapter);
+    }
 
-        */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
 
-        }
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_acro, menu);
+        return true;
+    }
 
-        public static class AcroFragment extends Fragment {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
 
-            public AcroFragment() {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
 
-            }
-
-            @Override
-            public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                     Bundle savedInstanceState) {
-
-                View rootView = inflater.inflate(R.layout.activity_acro, container, false);
-
-                // Populate the textview with the search term
-                // Use findViewById as a method OFF of the view you just inflated
-                TextView textView = (TextView) rootView.findViewById(R.id.textView_acro);
-
-                String searchTerm = getArguments().getString(EXTRA_MESSAGE).toUpperCase();
-                String temp = "";
-
-                for (int i = 0; i < searchTerm.length(); i++) {
-
-                    temp += searchTerm.charAt(i);
-                    temp += '.';
-                }
-                searchTerm = temp;
-                textView.setText(searchTerm);
-
-                // Dummy Data
-                String[] data = {
-                        "mitoxantrone, 1983",
-                        "Migration inhibition test, 1970",
-                        "monoiodotyrosine, 1973",
-                        "Magnetic induction tomography, 2000",
-                        "metal-insulator transition, 2000",
-                        "mouse inoculation test, 1969",
-                        "Massachusetts Institute of Technology, 1989",
-                        "Mitochondria, 1975",
-                        "multiple insulin injection therapy, 1976",
-                        "Minimally invasive therapy, 1993",
-                        "maximal intimal thickness, 1995",
-                        "Minimal invasive techniques, 2004",
-                        "mitomycin, 1982",
-                        "marrow iron turnover, 1982",
-                        "N-methylisothiazol-3-one, 1990",
-                        "The mean input time, 1993"
-                };
-
-                List<String> acroList = new ArrayList<String>(Arrays.asList(data));
-
-                ArrayAdapter<String> acroAdapter =
-                        new ArrayAdapter<String>(
-                                getActivity(),
-                                R.layout.adapter_layout,
-                                R.id.acro_list_textview,
-                                acroList);
-
-                ListView listView = (ListView) rootView.findViewById(R.id.listview_acro);
-                listView.setAdapter(acroAdapter);
-
-                return rootView;
-            }
-        }
-
-        @Override
-        public boolean onCreateOptionsMenu (Menu menu){
-            // Inflate the menu; this adds items to the action bar if it is present.
-            getMenuInflater().inflate(R.menu.menu_acro, menu);
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
             return true;
         }
 
-        @Override
-        public boolean onOptionsItemSelected (MenuItem item){
-            // Handle action bar item clicks here. The action bar will
-            // automatically handle clicks on the Home/Up button, so long
-            // as you specify a parent activity in AndroidManifest.xml.
-            int id = item.getItemId();
-
-            //noinspection SimplifiableIfStatement
-            if (id == R.id.action_settings) {
-                return true;
-            }
-
-            return super.onOptionsItemSelected(item);
-        }
+        return super.onOptionsItemSelected(item);
     }
+}
