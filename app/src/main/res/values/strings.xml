@@ -10,5 +10,6 @@
     <string name="button_text_main">Launch!</string>
     <string name="title_activity_acro">Results Page</string>
     <string name="results_header_acro">Your Results</string>
+    <string name="network_status_tv">Network Status</string>
 
 </resources>
