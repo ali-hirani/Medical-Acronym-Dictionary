@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -32,6 +33,8 @@ import java.util.List;
 public class AcroActivity extends ActionBarActivity {
 
     private ArrayAdapter<String> acroAdapter;
+    private String searchTerm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,19 +44,22 @@ public class AcroActivity extends ActionBarActivity {
 
         // getIntent gets the intent and the data contained within it
         Intent intent = getIntent();
-        String searchTerm = intent.getStringExtra(MainActivity.EXTRA_MESSAGE).toUpperCase();
+        searchTerm = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+
+        String searchTermDisplay = searchTerm.toUpperCase();
+
         String temp = "";
 
-        for (int i = 0; i < searchTerm.length(); i++) {
+        for (int i = 0; i < searchTermDisplay.length(); i++) {
 
-            temp += searchTerm.charAt(i);
+            temp += searchTermDisplay.charAt(i);
             temp += '.';
         }
-        searchTerm = temp;
+        searchTermDisplay = temp;
 
         // Populate the textview with the search term
         TextView textView = (TextView) findViewById(R.id.textView_acro);
-        textView.setText(searchTerm);
+        textView.setText(searchTermDisplay);
 
         // Dummy Data
         String[] data = {
@@ -97,7 +103,8 @@ public class AcroActivity extends ActionBarActivity {
             networkStatus.setText("NOT connected");
         }
         // call AsyncTask to perform network operation on separate thread
-        new FetchAcroTask().execute("http://www.nactem.ac.uk/software/acromine/dictionary.py?sf=nasa");
+        //new FetchAcroTask().execute("http://www.nactem.ac.uk/software/acromine/dictionary.py?sf=nasa");
+        new FetchAcroTask().execute(searchTerm);
         Toast.makeText(getBaseContext(), "Executed!", Toast.LENGTH_LONG).show();
     }
 
@@ -139,11 +146,24 @@ public class AcroActivity extends ActionBarActivity {
         String result = "";
         try {
 
+            // Construct the URL
+            final String ACROMINE_BASE_URL =
+                    "http://www.nactem.ac.uk/software/acromine/dictionary.py?";
+
+            // Short form user input
+            final String QUERY_PARAM = "sf";
+
+            Uri builtUri = Uri.parse(ACROMINE_BASE_URL).buildUpon()
+                    .appendQueryParameter(QUERY_PARAM, url)
+                    .build();
+
+            String theURL = builtUri.toString();
+
             // create HttpClient
             HttpClient httpclient = new DefaultHttpClient();
 
             // make GET request to the given URL
-            HttpResponse httpResponse = httpclient.execute(new HttpGet(url));
+            HttpResponse httpResponse = httpclient.execute(new HttpGet(theURL));
 
             // receive response as inputStream
             inputStream = httpResponse.getEntity().getContent();
@@ -176,7 +196,6 @@ public class AcroActivity extends ActionBarActivity {
     public class FetchAcroTask extends AsyncTask<String, Void, String> {
 
         private final String LOG_TAG = FetchAcroTask.class.getSimpleName();
-
 
         @Override
         protected String doInBackground(String... urls) {
