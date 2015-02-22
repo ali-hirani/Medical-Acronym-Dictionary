@@ -20,6 +20,9 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -34,6 +37,7 @@ public class AcroActivity extends ActionBarActivity {
 
     private ArrayAdapter<String> acroAdapter;
     private String searchTerm;
+    private String[] data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,24 +66,27 @@ public class AcroActivity extends ActionBarActivity {
         textView.setText(searchTermDisplay);
 
         // Dummy Data
-        String[] data = {
-                //"mitoxantrone, 1983",
-                //"Migration inhibition test, 1970",
-                //"monoiodotyrosine, 1973",
-                //"Magnetic induction tomography, 2000",
-                //"metal-insulator transition, 2000",
-                //"mouse inoculation test, 1969",
-                //"Massachusetts Institute of Technology, 1989",
-                //"Mitochondria, 1975",
-                //"multiple insulin injection therapy, 1976",
-                //"Minimally invasive therapy, 1993",
-                //"maximal intimal thickness, 1995",
-                //"Minimal invasive techniques, 2004",
-                //"mitomycin, 1982",
-                //"marrow iron turnover, 1982",
-                //"N-methylisothiazol-3-one, 1990",
-                //"The mean input time, 1993"
-        };
+            data = new String[]{
+
+                  "Long Forms",
+                  "-------------------"
+                  // "mitoxantrone, 1983",
+                  // "Migration inhibition test, 1970",
+                  // "monoiodotyrosine, 1973",
+                  // "Magnetic induction tomography, 2000",
+                  // "metal-insulator transition, 2000",
+                  // "mouse inoculation test, 1969",
+                  // "Massachusetts Institute of Technology, 1989",
+                  // "Mitochondria, 1975",
+                  // "multiple insulin injection therapy, 1976",
+                  // "Minimally invasive therapy, 1993",
+                  // "maximal intimal thickness, 1995",
+                  // "Minimal invasive techniques, 2004",
+                  // "mitomycin, 1982",
+                  // "marrow iron turnover, 1982",
+                  // "N-methylisothiazol-3-one, 1990",
+                  // "The mean input time, 1993"
+            };
 
         List<String> acroList = new ArrayList<>(Arrays.asList(data));
 
@@ -140,10 +147,20 @@ public class AcroActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-    public static String GET(String url) {
-        InputStream inputStream = null;
+    private static String convertInputStreamToString(InputStream inputStream) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+        String line = "";
         String result = "";
+        while ((line = bufferedReader.readLine()) != null)
+            result += line;
+
+        inputStream.close();
+        return result;
+    }
+
+    public static String[] GET(String url) {
+        InputStream inputStream = null;
+        String rawJson = "";
         try {
 
             // Construct the URL
@@ -170,46 +187,85 @@ public class AcroActivity extends ActionBarActivity {
 
             // convert inputstream to string
             if (inputStream != null)
-                result = convertInputStreamToString(inputStream);
+                rawJson = convertInputStreamToString(inputStream);
             else
-                result = "Did not work!";
+                rawJson = "Did not work!";
 
         } catch (Exception e) {
             Log.d("InputStream", e.getLocalizedMessage());
         }
 
-        return result;
+        try {
+            return getAcroResultsFromJson(rawJson);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
-    private static String convertInputStreamToString(InputStream inputStream) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-        String line = "";
-        String result = "";
-        while ((line = bufferedReader.readLine()) != null)
-            result += line;
+    public static String[] getAcroResultsFromJson(String rawJson)
+            throws JSONException {
 
-        inputStream.close();
-        return result;
+        // Array of long forms
+        final String ACRO_LFS = "lfs";
+
+        // Long Form
+        final String ACRO_LF = "lf";
+
+        // Frequency
+        final String ACRO_FREQ = "freq";
+
+        // Origin date
+        final String ACRO_SINCE = "since";
+
+        JSONArray acroJsonArray = new JSONArray(rawJson);
+        JSONObject acroJson = acroJsonArray.getJSONObject(0);
+        JSONArray acroArray = acroJson.getJSONArray(ACRO_LFS);
+
+        // Array holding built result strings
+        String[] resultStrs = new String[acroArray.length()];
+
+        for(int i = 0; i < acroArray.length(); i++) {
+
+            String longForm;
+            String frequency;
+            String originDate;
+
+            // Represents the current entry
+            JSONObject currentEntry = acroArray.getJSONObject(i);
+
+            longForm = currentEntry.getString(ACRO_LF);
+            frequency = currentEntry.getString(ACRO_FREQ);
+            originDate = currentEntry.getString(ACRO_SINCE);
+
+            resultStrs[i] = longForm + ", " + frequency + "," + originDate;
+        }
+
+        return resultStrs;
     }
 
 
-    public class FetchAcroTask extends AsyncTask<String, Void, String> {
+    public class FetchAcroTask extends AsyncTask<String, Void, String[]> {
 
         private final String LOG_TAG = FetchAcroTask.class.getSimpleName();
 
         @Override
-        protected String doInBackground(String... urls) {
+        protected String[] doInBackground(String... params) {
 
-            return GET(urls[0]);
+            if(params.length == 0) {
+                return null;
+            }
+            return GET(params[0]);
         }
 
         @Override
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(String[] resultStrs) {
             Toast.makeText(getBaseContext(), "Received!", Toast.LENGTH_LONG).show();
             //TextView networkStatus = (TextView) findViewById(R.id.network_status);
 
-            acroAdapter.addAll(result);
+            acroAdapter.addAll(resultStrs);
+
+            }
         }
     }
-
-}
