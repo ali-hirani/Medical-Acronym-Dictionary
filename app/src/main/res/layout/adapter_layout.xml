@@ -3,4 +3,5 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:textColor="#ffffff"
+    android:textSize="12sp"
     android:id="@+id/acro_list_textview"></TextView>

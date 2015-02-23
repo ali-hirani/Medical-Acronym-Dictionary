@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -112,7 +111,7 @@ public class AcroActivity extends ActionBarActivity {
         // call AsyncTask to perform network operation on separate thread
         //new FetchAcroTask().execute("http://www.nactem.ac.uk/software/acromine/dictionary.py?sf=nasa");
         new FetchAcroTask().execute(searchTerm);
-        Toast.makeText(getBaseContext(), "Executed!", Toast.LENGTH_LONG).show();
+        //Toast.makeText(getBaseContext(), "Executed!", Toast.LENGTH_LONG).show();
     }
 
     public boolean isConnected() {
@@ -245,7 +244,6 @@ public class AcroActivity extends ActionBarActivity {
         return resultStrs;
     }
 
-
     public class FetchAcroTask extends AsyncTask<String, Void, String[]> {
 
         private final String LOG_TAG = FetchAcroTask.class.getSimpleName();
@@ -261,10 +259,14 @@ public class AcroActivity extends ActionBarActivity {
 
         @Override
         protected void onPostExecute(String[] resultStrs) {
-            Toast.makeText(getBaseContext(), "Received!", Toast.LENGTH_LONG).show();
+            //Toast.makeText(getBaseContext(), "Received!", Toast.LENGTH_LONG).show();
             //TextView networkStatus = (TextView) findViewById(R.id.network_status);
 
-            acroAdapter.addAll(resultStrs);
+            if(resultStrs == null) {
+                acroAdapter.add("No results were found");
+            } else {
+                acroAdapter.addAll(resultStrs);
+            }
 
             }
         }

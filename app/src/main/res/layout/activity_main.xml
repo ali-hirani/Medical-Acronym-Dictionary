@@ -4,18 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/black"
+    android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity">
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:text="@string/home_page_title_main"
-        android:textColor="#ffb20eaf"
+        android:textColor="#ffffff"
         android:textSize="30sp"
         android:textStyle="bold"
         android:typeface="monospace"
@@ -24,7 +25,7 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#ffffffff"
+        android:textColor="#ffffff"
         android:hint="@string/acro_input_hint_main"
         android:textColorHint="#ff69696a"
         android:id="@+id/editText"
@@ -37,12 +38,16 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:text="@string/url_credit_main"
+        android:textSize="12sp"
+        android:textColor="#ffffff"
+        android:background="#0099CC"
+        android:id="@+id/textView2"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:textSize="12sp"
-        android:textColor="#ffffffff"
-        android:paddingBottom="10dp"/>
+        android:gravity="center"/>
 
     <at.markushi.ui.CircleButton
         android:layout_width="64dip"
