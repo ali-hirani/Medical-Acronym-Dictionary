@@ -1,7 +1,9 @@
 package me.ahirani.acro_api;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -12,6 +14,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -66,31 +69,31 @@ public class AcroActivity extends ActionBarActivity {
         textView.setText(searchTermDisplay);
 
         // Dummy Data
-            data = new String[]{
+        data = new String[]{
 
-                  "Long Forms",
-                  "-------------------"
-                  // "mitoxantrone, 1983",
-                  // "Migration inhibition test, 1970",
-                  // "monoiodotyrosine, 1973",
-                  // "Magnetic induction tomography, 2000",
-                  // "metal-insulator transition, 2000",
-                  // "mouse inoculation test, 1969",
-                  // "Massachusetts Institute of Technology, 1989",
-                  // "Mitochondria, 1975",
-                  // "multiple insulin injection therapy, 1976",
-                  // "Minimally invasive therapy, 1993",
-                  // "maximal intimal thickness, 1995",
-                  // "Minimal invasive techniques, 2004",
-                  // "mitomycin, 1982",
-                  // "marrow iron turnover, 1982",
-                  // "N-methylisothiazol-3-one, 1990",
-                  // "The mean input time, 1993"
-            };
+                "Long Forms",
+                "-------------------"
+                // "mitoxantrone, 1983",
+                // "Migration inhibition test, 1970",
+                // "monoiodotyrosine, 1973",
+                // "Magnetic induction tomography, 2000",
+                // "metal-insulator transition, 2000",
+                // "mouse inoculation test, 1969",
+                // "Massachusetts Institute of Technology, 1989",
+                // "Mitochondria, 1975",
+                // "multiple insulin injection therapy, 1976",
+                // "Minimally invasive therapy, 1993",
+                // "maximal intimal thickness, 1995",
+                // "Minimal invasive techniques, 2004",
+                // "mitomycin, 1982",
+                // "marrow iron turnover, 1982",
+                // "N-methylisothiazol-3-one, 1990",
+                // "The mean input time, 1993"
+        };
 
         List<String> acroList = new ArrayList<>(Arrays.asList(data));
 
-                acroAdapter =
+        acroAdapter =
                 new ArrayAdapter<>(
                         this,
                         R.layout.adapter_layout,
@@ -147,6 +150,7 @@ public class AcroActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
     private static String convertInputStreamToString(InputStream inputStream) throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
         String line = "";
@@ -226,7 +230,7 @@ public class AcroActivity extends ActionBarActivity {
         // Array holding built result strings
         String[] resultStrs = new String[acroArray.length()];
 
-        for(int i = 0; i < acroArray.length(); i++) {
+        for (int i = 0; i < acroArray.length(); i++) {
 
             String longForm;
             String frequency;
@@ -245,24 +249,38 @@ public class AcroActivity extends ActionBarActivity {
         return resultStrs;
     }
 
+    public static ProgressDialog createProgressDialog(Context mContext) {
+        ProgressDialog dialog = new ProgressDialog(mContext);
+        try {
+            dialog.show();
+        } catch (WindowManager.BadTokenException e) {
+
+        }
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.progressdialog);
+        return dialog;
+    }
+
     public class FetchAcroTask extends AsyncTask<String, Void, String[]> {
 
-        private final String LOG_TAG = FetchAcroTask.class.getSimpleName();
-        ProgressDialog progress = new ProgressDialog(AcroActivity.this);
+        Dialog progressDialog = null;
 
         @Override
         protected void onPreExecute() {
 
-            progress.setTitle("Mining acronyms...");
-            progress.setMessage("Loading...");
-            progress.show();
-
+            // Display loading circle
+            if (progressDialog == null) {
+                progressDialog = createProgressDialog(AcroActivity.this);
+                progressDialog.show();
+            } else {
+                progressDialog.show();
+            }
         }
 
         @Override
         protected String[] doInBackground(String... params) {
 
-            if(params.length == 0) {
+            if (params.length == 0) {
                 return null;
             }
             return GET(params[0]);
@@ -270,17 +288,16 @@ public class AcroActivity extends ActionBarActivity {
 
         @Override
         protected void onPostExecute(String[] resultStrs) {
-            //Toast.makeText(getBaseContext(), "Received!", Toast.LENGTH_LONG).show();
-            //TextView networkStatus = (TextView) findViewById(R.id.network_status);
 
-            if(resultStrs == null) {
+            if (resultStrs == null) {
                 acroAdapter.add("No results were found");
             } else {
                 acroAdapter.addAll(resultStrs);
             }
 
-            progress.dismiss();
+            // Dismiss loading circle
+            progressDialog.dismiss();
 
-            }
         }
     }
+}
