@@ -1,6 +1,7 @@
 package me.ahirani.acro_api;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -247,6 +248,16 @@ public class AcroActivity extends ActionBarActivity {
     public class FetchAcroTask extends AsyncTask<String, Void, String[]> {
 
         private final String LOG_TAG = FetchAcroTask.class.getSimpleName();
+        ProgressDialog progress = new ProgressDialog(AcroActivity.this);
+
+        @Override
+        protected void onPreExecute() {
+
+            progress.setTitle("Mining acronyms...");
+            progress.setMessage("Loading...");
+            progress.show();
+
+        }
 
         @Override
         protected String[] doInBackground(String... params) {
@@ -267,6 +278,8 @@ public class AcroActivity extends ActionBarActivity {
             } else {
                 acroAdapter.addAll(resultStrs);
             }
+
+            progress.dismiss();
 
             }
         }
