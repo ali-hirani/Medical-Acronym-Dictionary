@@ -1,9 +1,6 @@
 package me.ahirani.acro_api;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -14,9 +11,10 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.WindowManager;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.apache.http.HttpResponse;
@@ -249,33 +247,9 @@ public class AcroActivity extends ActionBarActivity {
         return resultStrs;
     }
 
-    public static ProgressDialog createProgressDialog(Context mContext) {
-        ProgressDialog dialog = new ProgressDialog(mContext);
-        try {
-            dialog.show();
-        } catch (WindowManager.BadTokenException e) {
-
-        }
-        dialog.setCancelable(false);
-        dialog.setContentView(R.layout.progressdialog);
-        return dialog;
-    }
-
     public class FetchAcroTask extends AsyncTask<String, Void, String[]> {
 
-        Dialog progressDialog = null;
-
-        @Override
-        protected void onPreExecute() {
-
-            // Display loading circle
-            if (progressDialog == null) {
-                progressDialog = createProgressDialog(AcroActivity.this);
-                progressDialog.show();
-            } else {
-                progressDialog.show();
-            }
-        }
+        ProgressBar progressBar;
 
         @Override
         protected String[] doInBackground(String... params) {
@@ -296,8 +270,8 @@ public class AcroActivity extends ActionBarActivity {
             }
 
             // Dismiss loading circle
-            progressDialog.dismiss();
-
+            progressBar = (ProgressBar) findViewById(R.id.progressBar1);
+            progressBar.setVisibility(View.INVISIBLE);
         }
     }
 }
