@@ -1,20 +1,22 @@
 package me.ahirani.acro_api;
 
 import android.app.Activity;
+import android.app.ListActivity;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import org.apache.http.HttpResponse;
@@ -31,14 +33,19 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 
-public class AcroActivity extends ActionBarActivity {
+public class AcroActivity extends ListActivity {
 
+    private static final String ACRO_LF = "lf";
+    private static final String ACRO_SINCE = "since";
     private ArrayAdapter<String> acroAdapter;
     private String searchTerm;
     private String[] data;
+
+    static ArrayList<HashMap<String, String>> longFormList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,10 +104,9 @@ public class AcroActivity extends ActionBarActivity {
                         R.layout.adapter_layout,
                         acroList);
 
-        ListView listView = (ListView) findViewById(R.id.listview_acro);
+        longFormList = new ArrayList<HashMap<String, String>>();
 
-        // Binds the listview with the array adapter
-        listView.setAdapter(acroAdapter);
+        ListView lv = getListView();
 
         TextView networkStatus = (TextView) findViewById(R.id.network_status);
 
@@ -110,10 +116,7 @@ public class AcroActivity extends ActionBarActivity {
         } else {
             networkStatus.setText("NOT connected");
         }
-        // call AsyncTask to perform network operation on separate thread
-        //new FetchAcroTask().execute("http://www.nactem.ac.uk/software/acromine/dictionary.py?sf=nasa");
         new FetchAcroTask().execute(searchTerm);
-        //Toast.makeText(getBaseContext(), "Executed!", Toast.LENGTH_LONG).show();
     }
 
     public boolean isConnected() {
@@ -213,13 +216,13 @@ public class AcroActivity extends ActionBarActivity {
         final String ACRO_LFS = "lfs";
 
         // Long Form
-        final String ACRO_LF = "lf";
+        //final String ACRO_LF = "lf";
 
         // Frequency
         final String ACRO_FREQ = "freq";
 
         // Origin date
-        final String ACRO_SINCE = "since";
+        //final String ACRO_SINCE = "since";
 
         JSONArray acroJsonArray = new JSONArray(rawJson);
         JSONObject acroJson = acroJsonArray.getJSONObject(0);
@@ -241,6 +244,15 @@ public class AcroActivity extends ActionBarActivity {
             frequency = currentEntry.getString(ACRO_FREQ);
             originDate = currentEntry.getString(ACRO_SINCE);
 
+            // tmp hashmap for single long form entry
+            HashMap<String, String> longFormMap = new HashMap<String, String>();
+
+            // Add each child node to HashMap key
+            longFormMap.put(ACRO_LF, longForm);
+            longFormMap.put(ACRO_SINCE, originDate);
+
+            longFormList.add(longFormMap);
+
             resultStrs[i] = longForm + ", " + frequency + "," + originDate;
         }
 
@@ -250,6 +262,7 @@ public class AcroActivity extends ActionBarActivity {
     public class FetchAcroTask extends AsyncTask<String, Void, String[]> {
 
         ProgressBar progressBar;
+
 
         @Override
         protected String[] doInBackground(String... params) {
@@ -265,8 +278,18 @@ public class AcroActivity extends ActionBarActivity {
 
             if (resultStrs == null) {
                 acroAdapter.add("No results were found");
-            } else {
-                acroAdapter.addAll(resultStrs);
+            }
+            //else {
+            //    acroAdapter.addAll(resultStrs);
+            //}
+
+            else {
+                ListAdapter adapter = new SimpleAdapter(
+                        AcroActivity.this, longFormList,
+                        R.layout.list_item, new String[] { ACRO_LF, ACRO_SINCE }, new int[]
+                        { R.id.longform, R.id.year});
+
+                setListAdapter(adapter);
             }
 
             // Dismiss loading circle

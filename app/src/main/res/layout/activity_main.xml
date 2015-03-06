@@ -40,7 +40,7 @@
             android:id="@+id/clear_txt"
             android:layout_width="31dp"
             android:layout_height="31dp"
-            android:background="@drawable/x"
+            android:background="@drawable/cleartext"
             android:layout_alignTop="@+id/editText"
             android:layout_alignRight="@+id/editText"
             android:layout_alignEnd="@+id/editText" />
@@ -49,13 +49,13 @@
         android:id="@+id/search_button_main"
         android:layout_width="64dip"
         android:layout_height="64dip"
-        android:layout_above="@+id/textView2"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="80dp"
         android:onClick="displaySearchResults"
         android:src="@drawable/ic_action_done"
         app:cb_color="#99CC00"
-        app:cb_pressedRingWidth="8dip" />
+        app:cb_pressedRingWidth="8dip"
+        android:layout_marginBottom="57dp"
+        android:layout_above="@+id/textView2"
+        android:layout_centerHorizontal="true" />
 
 
     <TextView
