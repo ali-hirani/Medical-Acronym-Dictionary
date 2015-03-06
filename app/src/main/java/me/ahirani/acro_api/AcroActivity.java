@@ -209,6 +209,20 @@ public class AcroActivity extends ListActivity {
         return null;
     }
 
+    public static String capitalizeString(String string) {
+        char[] chars = string.toLowerCase().toCharArray();
+        boolean found = false;
+        for (int i = 0; i < chars.length; i++) {
+            if (!found && Character.isLetter(chars[i])) {
+                chars[i] = Character.toUpperCase(chars[i]);
+                found = true;
+            } else if (Character.isWhitespace(chars[i]) || chars[i] == '.' || chars[i] == '\'') {
+                found = false;
+            }
+        }
+        return String.valueOf(chars);
+    }
+
     public static String[] getAcroResultsFromJson(String rawJson)
             throws JSONException {
 
@@ -243,6 +257,9 @@ public class AcroActivity extends ListActivity {
             longForm = currentEntry.getString(ACRO_LF);
             frequency = currentEntry.getString(ACRO_FREQ);
             originDate = currentEntry.getString(ACRO_SINCE);
+
+            // Capitalize words
+            longForm = capitalizeString(longForm);
 
             // tmp hashmap for single long form entry
             HashMap<String, String> longFormMap = new HashMap<String, String>();
@@ -286,8 +303,8 @@ public class AcroActivity extends ListActivity {
             else {
                 ListAdapter adapter = new SimpleAdapter(
                         AcroActivity.this, longFormList,
-                        R.layout.list_item, new String[] { ACRO_LF, ACRO_SINCE }, new int[]
-                        { R.id.longform, R.id.year});
+                        R.layout.list_item, new String[]{ACRO_LF, ACRO_SINCE}, new int[]
+                        {R.id.longform, R.id.year});
 
                 setListAdapter(adapter);
             }

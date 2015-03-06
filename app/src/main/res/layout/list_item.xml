@@ -23,6 +23,6 @@
         android:textColor="#ffff"
         android:gravity="right"
         android:id="@+id/year"
-        android:layout_weight="1"/>
+        android:layout_weight="2"/>
 
 </LinearLayout>
