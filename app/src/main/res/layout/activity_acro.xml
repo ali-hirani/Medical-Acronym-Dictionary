@@ -3,45 +3,50 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/black"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     android:id="@+id/containerAcro"
     tools:context=".AcroActivity$AcroFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#ffffffff"
-        android:text="@string/network_status_tv"
-        android:gravity="center"
-        android:id="@+id/network_status"
-        android:layout_above="@+id/textView_acro"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true" />
+    <!--android:paddingBottom="@dimen/activity_vertical_margin"-->
+    <!--android:paddingLeft="@dimen/activity_horizontal_margin"-->
+    <!--android:paddingRight="@dimen/activity_horizontal_margin"-->
+    <!--android:paddingTop="@dimen/activity_vertical_margin"-->
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:textColor="#ffffffff"-->
+    <!--android:text="@string/network_status_tv"-->
+    <!--android:gravity="center"-->
+    <!--android:id="@+id/network_status"-->
+    <!--android:layout_above="@+id/textView_acro"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--android:layout_alignParentEnd="true"-->
+    <!--android:layout_alignParentTop="true" />-->
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="48dip"
         android:layout_centerHorizontal="true"
+        android:gravity="center"
         android:text="@string/results_header_acro"
         android:textColor="#ffffff"
+        android:background="#0099CC"
         android:textSize="30sp"
         android:textStyle="bold"
         android:typeface="monospace"
         android:id="@+id/textView" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="#ffffff"
-        android:hint="@string/acro_input_hint_main"
         android:textColorHint="#ff69696a"
+        android:text="Empty State"
         android:id="@+id/textView_acro"
-        android:layout_marginTop="15dp"
+        android:textSize="30sp"
+        android:textStyle="bold"
         android:gravity="center"
+        android:background="#FF4444"
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true" />
 
@@ -54,13 +59,13 @@
         android:layout_below="@+id/textView_acro"
         android:layout_above="@+id/textView2"
         android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"/>
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
         android:text="@string/url_credit_main"
         android:textSize="12sp"
         android:textColor="#ffffff"
@@ -68,7 +73,7 @@
         android:id="@+id/textView2"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:gravity="center"/>
+        android:gravity="center" />
 
     <ProgressBar
         android:id="@+id/progressBar1"

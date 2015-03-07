@@ -3,6 +3,7 @@ package me.ahirani.acro_api;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.InputFilter;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,7 +22,7 @@ public class MainActivity extends ActionBarActivity {
     // Called when user clicks the main button
     // Must be public, void return, and pass in the view that was clicked
 
-    public void displaySearchResults(View view){
+    public void displaySearchResults(View view) {
 
         // Create an intent and pass in the context
         // Pass in the class of what the intent is being delivered to
@@ -46,14 +47,17 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        editText = (EditText) findViewById(R.id.editText);
+        editText.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
+
         Button x = (Button) findViewById(R.id.clear_txt);
         x.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                editText = (EditText) findViewById(R.id.editText);
                 editText.setText("");
-            }});
+            }
+        });
     }
 
     @Override

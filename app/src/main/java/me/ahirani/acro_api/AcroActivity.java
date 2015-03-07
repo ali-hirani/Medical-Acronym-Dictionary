@@ -50,9 +50,11 @@ public class AcroActivity extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_acro);
 
-        // Every activity is invoked by an intent
+        // Fade animation because yolo
+        //overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+
+        setContentView(R.layout.activity_acro);
 
         // getIntent gets the intent and the data contained within it
         Intent intent = getIntent();
@@ -108,14 +110,16 @@ public class AcroActivity extends ListActivity {
 
         ListView lv = getListView();
 
+        /*
         TextView networkStatus = (TextView) findViewById(R.id.network_status);
 
         // check if you are connected or not
         if (isConnected()) {
-            networkStatus.setText("Connected");
+        networkStatus.setText("Connected");
         } else {
-            networkStatus.setText("NOT connected");
+        networkStatus.setText("NOT connected");
         }
+        */
         new FetchAcroTask().execute(searchTerm);
     }
 
