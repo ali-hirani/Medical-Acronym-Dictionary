@@ -198,7 +198,7 @@ public class AcroActivity extends ListActivity {
             if (inputStream != null)
                 rawJson = convertInputStreamToString(inputStream);
             else
-                rawJson = "Did not work!";
+                rawJson = "";
 
         } catch (Exception e) {
             Log.d("InputStream", e.getLocalizedMessage());
@@ -297,21 +297,12 @@ public class AcroActivity extends ListActivity {
         @Override
         protected void onPostExecute(String[] resultStrs) {
 
-            if (resultStrs == null) {
-                acroAdapter.add("No results were found");
-            }
-            //else {
-            //    acroAdapter.addAll(resultStrs);
-            //}
+            ListAdapter adapter = new SimpleAdapter(
+                    AcroActivity.this, longFormList,
+                    R.layout.list_item, new String[]{ACRO_LF, ACRO_SINCE}, new int[]
+                    {R.id.longform, R.id.year});
 
-            else {
-                ListAdapter adapter = new SimpleAdapter(
-                        AcroActivity.this, longFormList,
-                        R.layout.list_item, new String[]{ACRO_LF, ACRO_SINCE}, new int[]
-                        {R.id.longform, R.id.year});
-
-                setListAdapter(adapter);
-            }
+            setListAdapter(adapter);
 
             // Dismiss loading circle
             progressBar = (ProgressBar) findViewById(R.id.progressBar1);

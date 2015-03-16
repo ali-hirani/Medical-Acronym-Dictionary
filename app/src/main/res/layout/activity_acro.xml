@@ -1,9 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/containerAcro"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ff111a20"
-    android:id="@+id/containerAcro"
     tools:context=".AcroActivity$AcroFragment">
 
     <!--android:paddingBottom="@dimen/activity_vertical_margin"-->
@@ -24,61 +24,71 @@
     <!--android:layout_alignParentTop="true" />-->
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="48dip"
         android:layout_centerHorizontal="true"
+        android:background="#283593"
+        android:elevation="10dp"
         android:gravity="center"
         android:text="@string/results_header_acro"
         android:textColor="#ffffff"
-        android:background="#3F51B5"
         android:textSize="30sp"
         android:textStyle="bold"
-        android:typeface="monospace"
-        android:id="@+id/textView"
-        android:elevation="10dp" />
+        android:typeface="monospace" />
 
     <TextView
+        android:id="@+id/textView_acro"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView"
+        android:background="#455A64"
+        android:elevation="8dp"
+        android:gravity="center"
+        android:text="Empty State"
         android:textColor="#ffffff"
         android:textColorHint="#ff69696a"
-        android:text="Empty State"
-        android:id="@+id/textView_acro"
         android:textSize="30sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:background="#B71C1C"
-        android:elevation="8dp"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:textStyle="bold" />
 
     <ListView
+        android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@android:id/list"
+        android:layout_above="@+id/textView2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/textView_acro"
-        android:layout_above="@+id/textView2"
         android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:layout_marginTop="8dp"
         android:divider="#455A64"
         android:dividerHeight="1dp" />
 
     <TextView
+        android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/url_credit_main"
-        android:textSize="12sp"
-        android:textColor="#ffffff"
-        android:background="#3F51B5"
-        android:id="@+id/textView2"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:gravity="center" />
+        android:background="#283593"
+        android:gravity="center"
+        android:text="@string/url_credit_main"
+        android:textColor="#ffffff"
+        android:textSize="12sp" />
+
+    <!--<TextView-->
+        <!--android:id="@+id/empty"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:text="No Results to Display"-->
+        <!--android:gravity="center"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:textColor="#ffffff"-->
+        <!--android:textSize="30sp" />-->
 
     <ProgressBar
         android:id="@+id/progressBar1"
