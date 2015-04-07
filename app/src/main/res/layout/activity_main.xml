@@ -45,10 +45,10 @@
         android:id="@+id/clear_txt"
         android:layout_width="31dp"
         android:layout_height="31dp"
-        android:background="@drawable/cleartext"
         android:layout_alignTop="@+id/editText"
         android:layout_alignRight="@+id/editText"
-        android:layout_alignEnd="@+id/editText" />
+        android:layout_alignEnd="@+id/editText"
+        android:background="@drawable/cleartext"/>
 
     <at.markushi.ui.CircleButton
         android:id="@+id/search_button_main"

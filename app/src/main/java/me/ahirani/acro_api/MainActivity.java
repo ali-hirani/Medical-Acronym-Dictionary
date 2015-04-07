@@ -31,14 +31,19 @@ public class MainActivity extends ActionBarActivity {
         // Get the EditText element
         editText = (EditText) findViewById(R.id.editText);
 
+
         // String to hold the searched acronym
         String nameHolder = editText.getText().toString();
+        nameHolder = nameHolder.replaceAll("\\s+","");
 
-        // Key Name and value respectively
-        intent.putExtra(EXTRA_MESSAGE, nameHolder);
+        if(nameHolder != null && nameHolder.length() > 1) {
 
-        // Start the activity and pass in the intent
-        startActivity(intent);
+            // Key Name and value respectively
+            intent.putExtra(EXTRA_MESSAGE, nameHolder);
+
+            // Start the activity and pass in the intent
+            startActivity(intent);
+        }
     }
 
 

@@ -47,7 +47,7 @@
         android:background="#455A64"
         android:elevation="8dp"
         android:gravity="center"
-        android:text="Empty State"
+        android:text=""
         android:textColor="#ffffff"
         android:textColorHint="#ff69696a"
         android:textSize="30sp"
@@ -80,15 +80,16 @@
         android:textColor="#ffffff"
         android:textSize="12sp" />
 
-    <!--<TextView-->
-        <!--android:id="@+id/empty"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:text="No Results to Display"-->
-        <!--android:gravity="center"-->
-        <!--android:layout_centerVertical="true"-->
-        <!--android:textColor="#ffffff"-->
-        <!--android:textSize="30sp" />-->
+    <TextView
+        android:id="@+id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="No Results to Display"
+        android:visibility="gone"
+        android:gravity="center"
+        android:layout_centerVertical="true"
+        android:textColor="#ffffff"
+        android:textSize="30sp" />
 
     <ProgressBar
         android:id="@+id/progressBar1"

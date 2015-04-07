@@ -167,7 +167,7 @@ public class AcroActivity extends ListActivity {
         return result;
     }
 
-    public static String[] GET(String url) {
+    public static List GET(String url) {
         InputStream inputStream = null;
         String rawJson = "";
         try {
@@ -227,7 +227,7 @@ public class AcroActivity extends ListActivity {
         return String.valueOf(chars);
     }
 
-    public static String[] getAcroResultsFromJson(String rawJson)
+    public static ArrayList<HashMap<String, String>> getAcroResultsFromJson(String rawJson)
             throws JSONException {
 
         // Array of long forms
@@ -245,9 +245,6 @@ public class AcroActivity extends ListActivity {
         JSONArray acroJsonArray = new JSONArray(rawJson);
         JSONObject acroJson = acroJsonArray.getJSONObject(0);
         JSONArray acroArray = acroJson.getJSONArray(ACRO_LFS);
-
-        // Array holding built result strings
-        String[] resultStrs = new String[acroArray.length()];
 
         for (int i = 0; i < acroArray.length(); i++) {
 
@@ -273,20 +270,18 @@ public class AcroActivity extends ListActivity {
             longFormMap.put(ACRO_SINCE, originDate);
 
             longFormList.add(longFormMap);
-
-            resultStrs[i] = longForm + ", " + frequency + "," + originDate;
         }
 
-        return resultStrs;
+        return longFormList;
     }
 
-    public class FetchAcroTask extends AsyncTask<String, Void, String[]> {
+    public class FetchAcroTask extends AsyncTask<String, Void, List> {
 
         ProgressBar progressBar;
 
 
         @Override
-        protected String[] doInBackground(String... params) {
+        protected List doInBackground(String... params) {
 
             if (params.length == 0) {
                 return null;
@@ -295,18 +290,29 @@ public class AcroActivity extends ListActivity {
         }
 
         @Override
-        protected void onPostExecute(String[] resultStrs) {
+        protected void onPostExecute(List resultStrs) {
 
-            ListAdapter adapter = new SimpleAdapter(
-                    AcroActivity.this, longFormList,
-                    R.layout.list_item, new String[]{ACRO_LF, ACRO_SINCE}, new int[]
-                    {R.id.longform, R.id.year});
-
-            setListAdapter(adapter);
 
             // Dismiss loading circle
             progressBar = (ProgressBar) findViewById(R.id.progressBar1);
             progressBar.setVisibility(View.INVISIBLE);
+
+            View emptyTextView = findViewById(R.id.empty);
+            if (longFormList != null && longFormList.size() > 0) {
+                ListAdapter adapter = new SimpleAdapter(
+                        AcroActivity.this, longFormList,
+                        R.layout.list_item, new String[]{ACRO_LF, ACRO_SINCE}, new int[]
+                        {R.id.longform, R.id.year});
+                setListAdapter(adapter);
+
+                getListView().setVisibility(View.VISIBLE);
+
+                // Gone is cheaper actually removes it
+                emptyTextView.setVisibility(View.GONE);
+            } else {
+                getListView().setVisibility(View.GONE);
+                emptyTextView.setVisibility(View.VISIBLE);
+            }
         }
     }
 }
