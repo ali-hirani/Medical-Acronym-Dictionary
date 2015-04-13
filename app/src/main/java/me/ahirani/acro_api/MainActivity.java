@@ -6,8 +6,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.text.InputFilter;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 
 
@@ -34,9 +34,9 @@ public class MainActivity extends ActionBarActivity {
 
         // String to hold the searched acronym
         String nameHolder = editText.getText().toString();
-        nameHolder = nameHolder.replaceAll("\\s+","");
+        nameHolder = nameHolder.replaceAll("\\s+", "");
 
-        if(nameHolder != null && nameHolder.length() > 1) {
+        if (nameHolder != null && nameHolder.length() > 1) {
 
             // Key Name and value respectively
             intent.putExtra(EXTRA_MESSAGE, nameHolder);
@@ -55,12 +55,25 @@ public class MainActivity extends ActionBarActivity {
         editText = (EditText) findViewById(R.id.editText);
         editText.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
 
-        Button x = (Button) findViewById(R.id.clear_txt);
-        x.setOnClickListener(new View.OnClickListener() {
+//        Button x = (Button) findViewById(R.id.clear_txt);
+//        x.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                editText.setText("");
+//            }
+//        });
 
+        editText.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                editText.setText("");
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    // drawable is touched
+                    if (event.getRawX() >= editText.getRight() - editText.getTotalPaddingRight()) {
+                        editText.setText("");
+                    }
+                }
+                return false;
             }
         });
     }
