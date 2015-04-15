@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,19 +38,23 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class AcroActivity extends ListActivity {
+public class AcroActivity extends ActionBarActivity {
 
     private static final String ACRO_LF = "lf";
     private static final String ACRO_SINCE = "since";
-    private ArrayAdapter<String> acroAdapter;
     private String searchTerm;
     private String[] data;
+
+    private ListView listView;
+    private ListAdapter adapter;
 
     static ArrayList<HashMap<String, String>> longFormList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // getActionBar().show();
 
         // Fade animation because yolo
         //overridePendingTransition(R.anim.fadein, R.anim.fadeout);
@@ -100,15 +105,9 @@ public class AcroActivity extends ListActivity {
 
         List<String> acroList = new ArrayList<>(Arrays.asList(data));
 
-        acroAdapter =
-                new ArrayAdapter<>(
-                        this,
-                        R.layout.adapter_layout,
-                        acroList);
-
         longFormList = new ArrayList<HashMap<String, String>>();
 
-        ListView lv = getListView();
+        listView = (ListView) findViewById(R.id.list);
 
         /*
         TextView networkStatus = (TextView) findViewById(R.id.network_status);
@@ -137,7 +136,7 @@ public class AcroActivity extends ListActivity {
 
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_acro, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -291,26 +290,24 @@ public class AcroActivity extends ListActivity {
 
         @Override
         protected void onPostExecute(List resultStrs) {
-
-
             // Dismiss loading circle
             progressBar = (ProgressBar) findViewById(R.id.progressBar1);
             progressBar.setVisibility(View.INVISIBLE);
 
             View emptyTextView = findViewById(R.id.empty);
             if (longFormList != null && longFormList.size() > 0) {
-                ListAdapter adapter = new SimpleAdapter(
+                adapter = new SimpleAdapter(
                         AcroActivity.this, longFormList,
                         R.layout.list_item, new String[]{ACRO_LF, ACRO_SINCE}, new int[]
                         {R.id.longform, R.id.year});
-                setListAdapter(adapter);
+                listView.setAdapter(adapter);
 
-                getListView().setVisibility(View.VISIBLE);
+                listView.setVisibility(View.VISIBLE);
 
                 // Gone is cheaper actually removes it
                 emptyTextView.setVisibility(View.GONE);
             } else {
-                getListView().setVisibility(View.GONE);
+                listView.setVisibility(View.GONE);
                 emptyTextView.setVisibility(View.VISIBLE);
             }
         }

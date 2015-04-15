@@ -41,7 +41,7 @@ public class MainActivity extends ActionBarActivity {
             // Key Name and value respectively
             intent.putExtra(EXTRA_MESSAGE, nameHolder);
 
-            // Start the activity and pass in the intent
+            // Start the activity and pass in the i ntent
             startActivity(intent);
         }
     }
