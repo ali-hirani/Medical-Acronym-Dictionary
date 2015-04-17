@@ -5,7 +5,9 @@
     android:orientation="horizontal"
     android:padding="10dp"
     android:paddingLeft="10dp"
-    android:paddingRight="10dp">
+    android:paddingRight="10dp"
+    android:clickable="true"
+    android:background="@drawable/selector_list_item">
 
     <TextView
         android:layout_width="match_parent"
