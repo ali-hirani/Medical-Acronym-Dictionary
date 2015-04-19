@@ -1,6 +1,9 @@
 package me.ahirani.acro_api;
 
 import android.app.Activity;
+import android.app.SearchManager;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -10,11 +13,13 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -122,6 +127,14 @@ public class AcroActivity extends ActionBarActivity {
             return true;
         else
             return false;
+    }
+
+    public void searchWeb(String query) {
+        Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+        intent.putExtra(SearchManager.QUERY, query);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
     }
 
 //    @Override
@@ -303,6 +316,36 @@ public class AcroActivity extends ActionBarActivity {
                 listView.setVisibility(View.GONE);
                 emptyTextView.setVisibility(View.VISIBLE);
             }
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    HashMap tempMap = (HashMap) parent.getItemAtPosition(position);
+                    String myLongForm = (String) tempMap.get(ACRO_LF);
+
+                    searchWeb(myLongForm);
+
+                    Toast toast = Toast.makeText(getApplicationContext(), "Searched: " + myLongForm, Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
+
+            listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                    HashMap tempMap = (HashMap) parent.getItemAtPosition(position);
+                    String myLongForm = (String) tempMap.get(ACRO_LF);
+
+                    ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                    ClipData clip = ClipData.newPlainText("Long Form", myLongForm);
+                    clipboard.setPrimaryClip(clip);
+
+                    Toast toast = Toast.makeText(getApplicationContext(), "Copied: " + myLongForm, Toast.LENGTH_SHORT);
+                    toast.show();
+                    return true;
+                }
+            });
         }
     }
 }
