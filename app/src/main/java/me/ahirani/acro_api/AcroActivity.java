@@ -1,7 +1,6 @@
 package me.ahirani.acro_api;
 
 import android.app.Activity;
-import android.app.ListActivity;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -10,10 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -42,11 +38,8 @@ public class AcroActivity extends ActionBarActivity {
 
     private static final String ACRO_LF = "lf";
     private static final String ACRO_SINCE = "since";
-    private String searchTerm;
-    private String[] data;
 
     private ListView listView;
-    private ListAdapter adapter;
 
     static ArrayList<HashMap<String, String>> longFormList;
 
@@ -63,7 +56,7 @@ public class AcroActivity extends ActionBarActivity {
 
         // getIntent gets the intent and the data contained within it
         Intent intent = getIntent();
-        searchTerm = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+        String searchTerm = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
 
         String searchTermDisplay = searchTerm.toUpperCase();
 
@@ -81,7 +74,7 @@ public class AcroActivity extends ActionBarActivity {
         textView.setText(searchTermDisplay);
 
         // Dummy Data
-        data = new String[]{
+        String[] data = new String[]{
 
                 "Long Forms",
                 "-------------------"
@@ -131,29 +124,29 @@ public class AcroActivity extends ActionBarActivity {
             return false;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_acro, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_acro, menu);
+//        return super.onCreateOptionsMenu(menu);
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
     private static String convertInputStreamToString(InputStream inputStream) throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
@@ -296,7 +289,7 @@ public class AcroActivity extends ActionBarActivity {
 
             View emptyTextView = findViewById(R.id.empty);
             if (longFormList != null && longFormList.size() > 0) {
-                adapter = new SimpleAdapter(
+                ListAdapter adapter = new SimpleAdapter(
                         AcroActivity.this, longFormList,
                         R.layout.list_item, new String[]{ACRO_LF, ACRO_SINCE}, new int[]
                         {R.id.longform, R.id.year});

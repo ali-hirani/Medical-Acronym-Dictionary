@@ -1,6 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ff111a20"
@@ -17,51 +18,53 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:background="#455A64"
+        android:elevation="8dp"
         android:gravity="center"
         android:text="@string/home_page_title_main"
         android:textColor="#ffffff"
-        android:background="#455A64"
         android:textSize="30sp"
         android:textStyle="bold"
-        android:typeface="monospace"
-        android:elevation="8dp" />
+        android:typeface="monospace" />
 
     <EditText
         android:id="@+id/editText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:drawableRight="@drawable/selector_button_x"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
         android:drawablePadding="10dp"
+        android:drawableRight="@drawable/selector_button_x"
+        android:gravity="center"
         android:hint="@string/acro_input_hint_main"
+        android:inputType="textVisiblePassword"
+        android:paddingBottom="10dp"
         android:singleLine="true"
         android:textColor="#ffffff"
-        android:textColorHint="#ff69696a"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:textColorHint="#ff69696a" />
+
 
     <!--<Button-->
-        <!--android:id="@+id/clear_txt"-->
-        <!--android:layout_width="31dp"-->
-        <!--android:layout_height="31dp"-->
-        <!--android:layout_alignTop="@+id/editText"-->
-        <!--android:layout_alignRight="@+id/editText"-->
-        <!--android:layout_alignEnd="@+id/editText"-->
-        <!--android:background="@drawable/cleartext"/>-->
+    <!--android:id="@+id/clear_txt"-->
+    <!--android:layout_width="31dp"-->
+    <!--android:layout_height="31dp"-->
+    <!--android:layout_alignTop="@+id/editText"-->
+    <!--android:layout_alignRight="@+id/editText"-->
+    <!--android:layout_alignEnd="@+id/editText"-->
+    <!--android:background="@drawable/cleartext"/>-->
 
     <at.markushi.ui.CircleButton
         android:id="@+id/search_button_main"
         android:layout_width="64dip"
         android:layout_height="64dip"
+        android:layout_above="@+id/textView2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="57dp"
         android:onClick="displaySearchResults"
         android:src="@drawable/ic_action_done"
         app:cb_color="#99CC00"
-        app:cb_pressedRingWidth="8dip"
-        android:layout_marginBottom="57dp"
-        android:layout_above="@+id/textView2"
-        android:layout_centerHorizontal="true" />
+        app:cb_pressedRingWidth="8dip" />
 
 
     <TextView

@@ -24,18 +24,18 @@
     <!--android:layout_alignParentTop="true" />-->
 
     <!--<TextView-->
-        <!--android:id="@+id/textView"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="48dip"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:background="#283593"-->
-        <!--android:elevation="10dp"-->
-        <!--android:gravity="center"-->
-        <!--android:text="@string/results_header_acro"-->
-        <!--android:textColor="#ffffff"-->
-        <!--android:textSize="30sp"-->
-        <!--android:textStyle="bold"-->
-        <!--android:typeface="monospace" />-->
+    <!--android:id="@+id/textView"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="48dip"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:background="#283593"-->
+    <!--android:elevation="10dp"-->
+    <!--android:gravity="center"-->
+    <!--android:text="@string/results_header_acro"-->
+    <!--android:textColor="#ffffff"-->
+    <!--android:textSize="30sp"-->
+    <!--android:textStyle="bold"-->
+    <!--android:typeface="monospace" />-->
 
     <TextView
         android:id="@+id/textView_acro"
