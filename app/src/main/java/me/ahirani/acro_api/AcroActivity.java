@@ -34,7 +34,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -51,8 +50,6 @@ public class AcroActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // getActionBar().show();
 
         // Fade animation because yolo
         //overridePendingTransition(R.anim.fadein, R.anim.fadeout);
@@ -77,31 +74,6 @@ public class AcroActivity extends ActionBarActivity {
         // Populate the textview with the search term
         TextView textView = (TextView) findViewById(R.id.textView_acro);
         textView.setText(searchTermDisplay);
-
-        // Dummy Data
-        String[] data = new String[]{
-
-                "Long Forms",
-                "-------------------"
-                // "mitoxantrone, 1983",
-                // "Migration inhibition test, 1970",
-                // "monoiodotyrosine, 1973",
-                // "Magnetic induction tomography, 2000",
-                // "metal-insulator transition, 2000",
-                // "mouse inoculation test, 1969",
-                // "Massachusetts Institute of Technology, 1989",
-                // "Mitochondria, 1975",
-                // "multiple insulin injection therapy, 1976",
-                // "Minimally invasive therapy, 1993",
-                // "maximal intimal thickness, 1995",
-                // "Minimal invasive techniques, 2004",
-                // "mitomycin, 1982",
-                // "marrow iron turnover, 1982",
-                // "N-methylisothiazol-3-one, 1990",
-                // "The mean input time, 1993"
-        };
-
-        List<String> acroList = new ArrayList<>(Arrays.asList(data));
 
         longFormList = new ArrayList<HashMap<String, String>>();
 
