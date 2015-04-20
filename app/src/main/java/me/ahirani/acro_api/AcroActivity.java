@@ -120,6 +120,15 @@ public class AcroActivity extends ActionBarActivity {
         new FetchAcroTask().execute(searchTerm);
     }
 
+    public void searchWeb(String query) {
+
+        Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+        intent.putExtra(SearchManager.QUERY, query);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
+
     public boolean isConnected() {
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -127,14 +136,6 @@ public class AcroActivity extends ActionBarActivity {
             return true;
         else
             return false;
-    }
-
-    public void searchWeb(String query) {
-        Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
-        intent.putExtra(SearchManager.QUERY, query);
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivity(intent);
-        }
     }
 
 //    @Override
@@ -320,13 +321,20 @@ public class AcroActivity extends ActionBarActivity {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    HashMap tempMap = (HashMap) parent.getItemAtPosition(position);
-                    String myLongForm = (String) tempMap.get(ACRO_LF);
 
-                    searchWeb(myLongForm);
+                    if (isConnected()) {
 
-                    Toast toast = Toast.makeText(getApplicationContext(), "Searched: " + myLongForm, Toast.LENGTH_SHORT);
-                    toast.show();
+                        HashMap tempMap = (HashMap) parent.getItemAtPosition(position);
+                        String myLongForm = (String) tempMap.get(ACRO_LF);
+
+                        searchWeb(myLongForm);
+
+                        Toast toast = Toast.makeText(getApplicationContext(), "Searched: " + myLongForm, Toast.LENGTH_SHORT);
+                        toast.show();
+                    } else {
+                        Toast toast1 = Toast.makeText(getApplicationContext(), "You are not connected", Toast.LENGTH_SHORT);
+                        toast1.show();
+                    }
                 }
             });
 

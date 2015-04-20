@@ -2,6 +2,8 @@ package me.ahirani.acro_api;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.InputFilter;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Toast;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -56,29 +59,43 @@ public class MainActivity extends ActionBarActivity {
         editText.setCursorVisible(false);
     }
 
+    public boolean isConnected() {
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected())
+            return true;
+        else
+            return false;
+    }
+
     public void displaySearchResults(View view) {
 
         // Create an intent and pass in the context
         // Pass in the class of what the intent is being delivered to
         Intent intent = new Intent(this, AcroActivity.class);
 
-        // Get the EditText element
-        editText = (EditText) findViewById(R.id.editText);
+        if (isConnected()) {
+            // Get the EditText element
+            editText = (EditText) findViewById(R.id.editText);
 
-        // String to hold the searched acronym
-        String nameHolder = editText.getText().toString();
+            // String to hold the searched acronym
+            String nameHolder = editText.getText().toString();
 
-        //removes spaces and periods from search string
-        nameHolder = nameHolder.replaceAll("\\s+", "");
-        nameHolder = nameHolder.replaceAll("\\.", "");
+            //removes spaces and periods from search string
+            nameHolder = nameHolder.replaceAll("\\s+", "");
+            nameHolder = nameHolder.replaceAll("\\.", "");
 
-        if (nameHolder != null && nameHolder.length() > 1) {
+            if (nameHolder != null && nameHolder.length() > 1) {
 
-            // Key Name and value respectively
-            intent.putExtra(EXTRA_MESSAGE, nameHolder);
+                // Key Name and value respectively
+                intent.putExtra(EXTRA_MESSAGE, nameHolder);
 
-            // Start the activity and pass in the intent
-            startActivity(intent);
+                // Start the activity and pass in the intent
+                startActivity(intent);
+            }
+        } else {
+            Toast toast = Toast.makeText(getApplicationContext(), "You are not connected", Toast.LENGTH_SHORT);
+            toast.show();
         }
     }
 
