@@ -2,11 +2,13 @@ package me.ahirani.acro_api;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.InputFilter;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,12 +23,14 @@ public class MainActivity extends ActionBarActivity {
     // This ensure uniqueness in case your app interacts with other apps
     public static final String EXTRA_MESSAGE = "me.ahirani.acro_api.MESSAGE";
 
-    public EditText editText;
+    private EditText editText;
+    private AcroDatabase database;
 
     // Called when user clicks the main button
     // Must be public, void return, and pass in the view that was clicked
 
     public void setupUI(View view) {
+
 
         //Set up touch listener for non-text box views to hide keyboard.
         if (!(view instanceof EditText)) {
@@ -79,16 +83,17 @@ public class MainActivity extends ActionBarActivity {
             editText = (EditText) findViewById(R.id.editText);
 
             // String to hold the searched acronym
-            String nameHolder = editText.getText().toString();
+            String searchTerm = editText.getText().toString();
 
             //removes spaces and periods from search string
-            nameHolder = nameHolder.replaceAll("\\s+", "");
-            nameHolder = nameHolder.replaceAll("\\.", "");
+            searchTerm = searchTerm.replaceAll("\\s+", "").replaceAll("\\.", "");
 
-            if (nameHolder != null && nameHolder.length() > 1) {
+            database.insertSearchTerm(searchTerm);
+
+            if (searchTerm != null && searchTerm.length() > 1) {
 
                 // Key Name and value respectively
-                intent.putExtra(EXTRA_MESSAGE, nameHolder);
+                intent.putExtra(EXTRA_MESSAGE, searchTerm);
 
                 // Start the activity and pass in the intent
                 startActivity(intent);
@@ -102,9 +107,20 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Pass application context instead of activity context because it persists throughout app life.
+        database = AcroDatabase.getInstance(getApplicationContext());
+
         setContentView(R.layout.activity_main);
 
         setupUI(findViewById(R.id.main));
+
+        findViewById(R.id.search_button_main).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                displaySearchResults(view);
+            }
+        });
 
         InputFilter lengthFilter = new InputFilter.LengthFilter(8);
         editText = (EditText) findViewById(R.id.editText);
@@ -126,6 +142,15 @@ public class MainActivity extends ActionBarActivity {
                 return false;
             }
         });
+
+        final Cursor cursor = database.queryAllSearchTerms();
+
+        if (cursor.moveToFirst()) {
+            while (cursor.moveToNext()) {
+                String searchTerm = cursor.getString(cursor.getColumnIndex(AcroDatabase.TABLE_SEARCH_COLUMN_SEARCH_TERM));
+                Log.w("ACRO", "Search term = " + searchTerm);
+            }
+        }
     }
 
 /*

@@ -45,7 +45,6 @@
         android:layout_above="@+id/textView2"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="57dp"
-        android:onClick="displaySearchResults"
         android:src="@drawable/ic_action_done"
         app:cb_color="#99CC00"
         app:cb_pressedRingWidth="8dip" />
