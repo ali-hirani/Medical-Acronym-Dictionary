@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class AcroDatabase extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     private static final String DATABASE_NAME = "acro_database";
 
@@ -17,7 +17,7 @@ public class AcroDatabase extends SQLiteOpenHelper {
 
     // CREATE TABLE acro_search_history_table(acro_search_terms TEXT PRIMARY KEY)
     private static final String CREATE_TABLE_SEARCH = "CREATE TABLE " + TABLE_SEARCH_NAME + "("
-            + TABLE_SEARCH_COLUMN_SEARCH_TERM + " TEXT PRIMARY KEY)";
+            + TABLE_SEARCH_COLUMN_SEARCH_TERM + " TEXT PRIMARY KEY, UNIQUE(" + TABLE_SEARCH_COLUMN_SEARCH_TERM + ") ON CONFLICT REPLACE)";
 
     private static AcroDatabase INSTANCE = null;
 
@@ -37,7 +37,7 @@ public class AcroDatabase extends SQLiteOpenHelper {
 
     // Instance method, no need to pass in the db
     public Cursor queryAllSearchTerms() {
-        final String query = "SELECT " + TABLE_SEARCH_COLUMN_SEARCH_TERM + " FROM " + TABLE_SEARCH_NAME + " ASC";
+        final String query = "SELECT " + TABLE_SEARCH_COLUMN_SEARCH_TERM + " FROM " + TABLE_SEARCH_NAME + " ORDER BY " + TABLE_SEARCH_COLUMN_SEARCH_TERM + " ASC";
 
         // Assuming we have [SELECT name FROM users WHERE id=? AND age=?] then use selectionArgs = new String[]{ id, age }
         return getReadableDatabase().rawQuery(query, null);

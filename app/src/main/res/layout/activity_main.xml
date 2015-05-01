@@ -21,18 +21,20 @@
         android:textStyle="bold"
         android:typeface="monospace" />
 
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/editText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
         android:layout_gravity="center"
+        android:layout_below="@+id/textView"
+        android:layout_marginTop="50dp"
         android:drawablePadding="10dp"
         android:drawableRight="@drawable/selector_button_x"
         android:gravity="center"
         android:hint="@string/acro_input_hint_main"
         android:inputType="textVisiblePassword"
+        android:completionThreshold="1"
         android:paddingBottom="10dp"
         android:singleLine="true"
         android:textColor="#ffffff"
